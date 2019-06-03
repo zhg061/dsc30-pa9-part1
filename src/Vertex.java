@@ -7,7 +7,8 @@ public class Vertex {
     private final String name; // the name of this vertex
     private final int x; // the x coordinates of this vertex on map
     private final int y; // the y coordinates of this vertex on map
-
+    public Vertex prev;
+    public boolean visited;
     // TODO: add additional instance variables to work with different graph traversal algorithm
 
     private List<Edge> edgesList;
@@ -15,6 +16,7 @@ public class Vertex {
         this.name = name;
         this.x = x;
         this.y = y;
+        visited = false;
     }
 
     public String getName() {
@@ -30,6 +32,12 @@ public class Vertex {
     }
 
     // TODO: add necessary getters and setters for ALL your instance variable
+    public Vertex getPrev() {
+        return prev;
+    }
+    public void setPrev(Vertex x) {
+        prev = x;
+    }
     public List<Edge> getVertices() {
         return edgesList;
     }

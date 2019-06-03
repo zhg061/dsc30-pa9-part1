@@ -20,9 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -443,9 +441,37 @@ public class Display extends JFrame {
         }
 
         public void paintGraph(Graphics g) {
-            // TODO: for each edge in the graph, use paintEdge(g, edge.source, edge.target, edge.distance, Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255); to print the edge.
+            // TODO: for each edge in the graph, use paintEdge(g, edge.source, edge.target, edge.distance,
+            //  Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255); to print the edge.
+//            List<Edge> wList = overlayEdges.get("weighted");
+            Collection<List<Edge>> collection = graph.getEdges();
+            for (List<Edge> edges: collection) {
+                for (Edge edge: edges) {
+                    paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(),
+                            Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
+                }
+            }
+//            for (int i = 0; i < wList.size(); i++) {
+//                Edge edge = wList.get(i);
+//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
+//            }
+//            List<Edge> uList = overlayEdges.get("unweighted");
+//            for (int i = 0; i < uList.size(); i++) {
+//                Edge edge = uList.get(i);
+//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
+//            }
+//            List<Edge> mList = overlayEdges.get("mst");
+//            for (int i = 0; i < mList.size(); i++) {
+//                Edge edge = mList.get(i);
+//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
+//            }
+
 
             // TODO: for each vertex in the graph, use paintVertex(g, v); to print the vertex
+            ArrayList<Vertex> vertexes = graph.getVertexes();
+            for (Vertex vertex: vertexes) {
+                paintVertex(g, vertex);
+            }
 
             for (String overlayType : overlayEdges.keySet()) {
                 if (overlayType.equals("unweighted")) {
