@@ -158,8 +158,8 @@ public class Graph {
         // TODO
         for (Vertex key : myEdgeList.keySet()) {
             for (Edge value: myEdgeList.get(key)) {
-                double distance = computeEuclideanDistance(value.getSource().getX(), value.getSource().getY(),
-                        value.getTarget().getX(), value.getTarget().getY());
+                double distance = computeEuclideanDistance(value.getTarget().getX(), value.getTarget().getY(),
+                        value.getSource().getX(), value.getSource().getY());
                 value.setDistance(distance);
             }
 
