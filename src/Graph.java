@@ -12,7 +12,7 @@ public class Graph {
 
     // TODO: define a data structure to store all the vertices with fast access
     static int powerFactor = 2;
-    static double powerFactor1 = 1/2;
+    static double powerFactor1 = 1.0/2.0;
     static Double inf = Double.POSITIVE_INFINITY;
     private HashMap<Vertex, List<Edge>> myEdgeList;
     private HashMap<String, Vertex> myVertex;
@@ -171,8 +171,8 @@ public class Graph {
         // compute all the distances, and update it to the edges from myEdgeList
         for (Vertex key : myEdgeList.keySet()) {
             for (Edge value: myEdgeList.get(key)) {
-                double distance = computeEuclideanDistance(value.getTarget().getX(), value.getTarget().getY(),
-                        value.getSource().getX(), value.getSource().getY());
+                double distance = computeEuclideanDistance(value.getSource().getX(), value.getSource().getY(),
+                        value.getTarget().getX(), value.getTarget().getY());
                 // set the distance
                 value.setDistance(distance);
             }
