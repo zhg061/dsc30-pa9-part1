@@ -333,24 +333,24 @@ public class Graph {
      * @param goal the goal vertex to reach
      * @return the h value of cur and goal vertices
      */
-//    private double hValue(String cur, String goal) {
-//
-//        // TODO
-//
-//        return 0.0;
-//    }
-//
-//    /**
-//     * Find the path from vertex with name s to vertex with name t, using A*
-//     *
-//     * @param s the name of starting vertex
-//     * @param t the name of targeting vertex
-//     */
-//    public void AStar(String s, String t) {
-//
-//        // TODO
-//
-//    }
+    private double hValue(String cur, String goal) {
+
+        // TODO
+
+        return 0.0;
+    }
+
+    /**
+     * Find the path from vertex with name s to vertex with name t, using A*
+     *
+     * @param s the name of starting vertex
+     * @param t the name of targeting vertex
+     */
+    public void AStar(String s, String t) {
+
+        // TODO
+
+    }
 
     /**
      * Returns a list of edges for a path from city s to city t.
