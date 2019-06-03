@@ -1,3 +1,7 @@
+/*
+ * NAME: Zhaoyi Guo
+ * PID: A15180402
+ */
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -443,7 +447,6 @@ public class Display extends JFrame {
         public void paintGraph(Graphics g) {
             // TODO: for each edge in the graph, use paintEdge(g, edge.source, edge.target, edge.distance,
             //  Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255); to print the edge.
-//            List<Edge> wList = overlayEdges.get("weighted");
             Collection<List<Edge>> collection = graph.getEdges();
             for (List<Edge> edges: collection) {
                 for (Edge edge: edges) {
@@ -451,20 +454,7 @@ public class Display extends JFrame {
                             Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
                 }
             }
-//            for (int i = 0; i < wList.size(); i++) {
-//                Edge edge = wList.get(i);
-//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
-//            }
-//            List<Edge> uList = overlayEdges.get("unweighted");
-//            for (int i = 0; i < uList.size(); i++) {
-//                Edge edge = uList.get(i);
-//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
-//            }
-//            List<Edge> mList = overlayEdges.get("mst");
-//            for (int i = 0; i < mList.size(); i++) {
-//                Edge edge = mList.get(i);
-//                paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.LIGHT_GRAY, DEFAULT_THICKNESS, 255);
-//            }
+
 
 
             // TODO: for each vertex in the graph, use paintVertex(g, v); to print the vertex
@@ -476,12 +466,14 @@ public class Display extends JFrame {
             for (String overlayType : overlayEdges.keySet()) {
                 if (overlayType.equals("unweighted")) {
                     for (Edge edge : overlayEdges.get(overlayType)) {
-                        paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.RED, 8, 50);
+                        paintEdge(g, edge.getSource(), edge.getTarget(),
+                                edge.getDistance(), Color.RED, 8, 50);
                     }
                 }
                 if (overlayType.equals("weighted")) {
                     for (Edge edge : overlayEdges.get(overlayType)) {
-                        paintEdge(g, edge.getSource(), edge.getTarget(), edge.getDistance(), Color.GREEN, 8, 50);
+                        paintEdge(g, edge.getSource(), edge.getTarget(),
+                                edge.getDistance(), Color.GREEN, 8, 50);
                     }
                 }
             }

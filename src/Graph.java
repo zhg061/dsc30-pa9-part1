@@ -1,9 +1,12 @@
-
+/*
+ * NAME: Zhaoyi Guo
+ * PID: A15180402
+ */
 import java.sql.SQLOutput;
 import java.util.*;
 
 /**
- *
+ * class that implements the graph
  */
 public class Graph {
 
@@ -11,17 +14,17 @@ public class Graph {
     static int powerFactor = 2;
     static double powerFactor1 = 1/2;
     static Double inf = Double.POSITIVE_INFINITY;
-//    is this initailization correct
     private HashMap<Vertex, List<Edge>> myEdgeList;
     private HashMap<String, Vertex> myVertex;
     private ArrayList<Vertex> exploredVertex;
+    private CostVertex currentV;
 
     /**
-     * Constructor for Graph
+     * Constructor for Graph that set myEdgeList and myVertex
      */
     public Graph() {
 
-        // TODO
+        // define myEdgeList and myVertex
         myEdgeList = new HashMap<Vertex, List<Edge>>();
         myVertex = new HashMap<String, Vertex>();
 
@@ -29,8 +32,11 @@ public class Graph {
 
     /**
      * getter for vertex
+     * return: ArrayList<Vertex> result
      */
     public ArrayList getVertexes() {
+        // create a new array list, and add vertex to that array list
+        // using for loop
         ArrayList<Vertex> result = new ArrayList<>();
         for (Vertex vertex: myEdgeList.keySet()) {
             result.add(vertex);
@@ -38,7 +44,12 @@ public class Graph {
         return result;
     }
 
+    /**
+     * get all the edges from the myEdgeList
+     * @return Collection<List<Edge>>
+     */
     public Collection<List<Edge>> getEdges() {
+        // return all the values from the hashmap
         return myEdgeList.values();
     }
 
@@ -51,9 +62,10 @@ public class Graph {
      */
     public void addVertex(Vertex v) throws IllegalArgumentException {
 
-        // TODO
+        // if v is already exist, throw exception
         if (myEdgeList.containsKey(v))
             throw new IllegalArgumentException();
+        // other wise, add the v to both myEdgeList and myVertex
         myEdgeList.put(v, new ArrayList<>());
         myVertex.put(v.getName(), v);
     }
@@ -65,7 +77,7 @@ public class Graph {
      */
     public Collection<Vertex> getVertices() {
 
-        // TODO
+        // get all the keys from the myEgeList
 
         return myEdgeList.keySet();
     }
@@ -78,7 +90,7 @@ public class Graph {
      */
     public Vertex getVertex(String name) {
 
-        // TODO
+        // get the vertex by string, using myVertex
 
         return myVertex.get(name);
     }
@@ -94,7 +106,7 @@ public class Graph {
      */
     public void addEdge(String nameU, String nameV, Double weight) throws IllegalArgumentException {
 
-        // TODO
+        // add a new edge from u to v if myVertex contains both nameU and nameV
         if (myVertex.containsKey(nameU) && myVertex.containsKey(nameV)) {
             Vertex u = myVertex.get(nameU);
             Vertex v = myVertex.get(nameV);
@@ -116,10 +128,11 @@ public class Graph {
      */
     public void addUndirectedEdge(String nameU, String nameV, double weight) {
 
-        // TODO
+        // add edge to both direction if myVertex contains both nameU and nameV
         if (myVertex.containsKey(nameU) && myVertex.containsKey(nameV)) {
             Vertex u = myVertex.get(nameU);
             Vertex v = myVertex.get(nameV);
+            // create edges from both ways
             Edge newEdgeU = new Edge(u, v, weight);
             Edge newEdgeV = new Edge(v, u, weight);
             myEdgeList.get(u).add(newEdgeU);
@@ -143,7 +156,7 @@ public class Graph {
      */
     public double computeEuclideanDistance(double ux, double uy, double vx, double vy) {
 
-        // TODO
+        // calculate the distance from u to v
 
         return Math.pow((Math.pow((vx - ux), powerFactor) +
                 Math.pow((vy - uy), powerFactor)), powerFactor1);
@@ -155,11 +168,12 @@ public class Graph {
      */
     public void computeAllEuclideanDistances() {
 
-        // TODO
+        // compute all the distances, and update it to the edges from myEdgeList
         for (Vertex key : myEdgeList.keySet()) {
             for (Edge value: myEdgeList.get(key)) {
                 double distance = computeEuclideanDistance(value.getTarget().getX(), value.getTarget().getY(),
                         value.getSource().getX(), value.getSource().getY());
+                // set the distance
                 value.setDistance(distance);
             }
 
@@ -172,7 +186,7 @@ public class Graph {
      */
     private void resetAllVertices() {
 
-        // TODO
+        // changes all the prev of all the vertexes to null
         for (Vertex curV: myEdgeList.keySet()) {
             curV.setPrev(null);
         }
@@ -187,7 +201,7 @@ public class Graph {
      */
     public void DFS(String s, String t) {
         resetAllVertices();
-        // TODO
+        // get the vertexes of both start and target
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
         if (s == t) {
@@ -196,7 +210,6 @@ public class Graph {
 
         // Create a stack for DFS
         LinkedList<Vertex> stack = new LinkedList<>();
-//        Stack<Vertex> visitedStack = new Stack<>();
 
         // Push the current source node
         stack.add(start);
@@ -231,14 +244,13 @@ public class Graph {
      */
     public void BFS(String s, String t) {
 
-        // TODO
+        // reset all the prev to null
         resetAllVertices();
         if (s == t) {
             return;
         }
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
-        System.out.println("current target: " + target);
         LinkedList<Vertex> frontierQueue = new LinkedList<>();
         //Push startV to frontierQueue
         frontierQueue.add(start);
@@ -252,17 +264,13 @@ public class Graph {
             }
             //"Visit" currentV
             for (Edge edge: myEdgeList.get(currentV)) {
-                System.out.println("currentV's edges: " + edge.getTarget());
                 Vertex targetV = edge.getTarget();
                 //if ( adjV is not in discoveredSet )
-                //            Push adjV to frontierQueue
-                //            Add  adjV to discoveredSet
+                //            add adjV to frontierQueue
                 if (targetV.visited == false) {
                     frontierQueue.addLast(targetV);
                     targetV.prev = currentV;
                     targetV.visited = true;
-
-                    System.out.println(targetV + " previous vertex is: " + targetV.getPrev());
                 }
             }
         }
@@ -272,14 +280,26 @@ public class Graph {
      * Helper class for Dijkstra and A*, used in priority queue
      */
     private class CostVertex implements Comparable<CostVertex> {
+
         double cost;
         Vertex vertex;
 
+        /**
+         * define cost and vertex
+         * @param cost
+         * @param vertex
+         */
         public CostVertex(double cost, Vertex vertex) {
             this.cost = cost;
             this.vertex = vertex;
         }
 
+        /**
+         * compare the current CostVertex and another CostVertex
+         * based on their cost
+         * @param o
+         * @return integer
+         */
         public int compareTo(CostVertex o) {
             return Double.compare(cost, o.cost);
         }
@@ -297,33 +317,77 @@ public class Graph {
         resetAllVertices();
         if (s == t)
             return;
-        PriorityQueue<CostVertex> unvisited = new PriorityQueue<>();
-        //for each vertex currentV in graph, currentV->distance = Infinity, currentV->predV = 0
+        // create a priorityQueue that contains CostVertex
+        PriorityQueue<CostVertex> vertexQ = new PriorityQueue<>();
+        ArrayList<CostVertex> vertexL = new ArrayList<>();
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
-        for (Vertex curV: myEdgeList.keySet()) {
-            if (curV == start)
-                unvisited.add(new CostVertex(0, curV));
-            else
-                unvisited.add(new CostVertex(inf, curV));
-        }
-        while (!unvisited.isEmpty()) {
-            CostVertex currentV = unvisited.poll();
-            currentV.vertex.visited = true;
-            if (currentV.vertex == target)
-                return;
-            for (Edge value: myEdgeList.get(currentV.vertex)) {
-                Vertex adjV = value.getTarget();
-                if (!adjV.visited) {
-                    double edgeWeight = value.getDistance();
-                    double alternativePathDistance = edgeWeight + currentV.cost;
-                    CostVertex newCV = new CostVertex(alternativePathDistance, adjV);
-                    unvisited.add(newCV);
-                    adjV.prev = currentV.vertex;
-                    adjV.visited = true;
-                }
+        //for each vertex currentV in graph,
+        // currentV->distance = Infinity, currentV->predV = 0
+        for (Vertex curV : myEdgeList.keySet()) {
+            if (curV == start) {
+                curV.dist = 0.0;
+                vertexQ.add(new CostVertex(0, curV));
+//                vertexL.add(new CostVertex(0, curV));
+            }
+            else {
+                curV.dist = inf;
+//                vertexL.add(new CostVertex(inf, curV));
             }
         }
+        while (!vertexQ.isEmpty()) {
+            CostVertex curV = vertexQ.poll();
+            if (curV.vertex == target)
+                return;
+            // get all the adjacent edges of the current vertex
+            Vertex startV = curV.vertex;
+            for(Edge edge : myEdgeList.get(startV)) {
+                // get the target and distance of the edge
+                Vertex adjV = edge.getTarget();
+                double edgeWeight = edge.getDistance();
+                double newDis = edgeWeight + curV.cost;
+                // create a new cost vertex with the new distance
+
+                if (adjV.dist > newDis && adjV.visited == false) {
+                    CostVertex newCV = new CostVertex(newDis, adjV);
+                    adjV.dist = newDis;
+                    vertexQ.add(newCV);
+                    adjV.prev = curV.vertex;
+
+                }
+
+
+                // if the target vertex has not been visited
+//                if (!adjV.visited) {
+//                    for (int j = 0; j < vertexL.size(); j++) {
+//                        if (vertexL.get(j).vertex == adjV) {
+//                            //replace the original costVertex with the new costVertex
+//                            vertexQ.remove(vertexL.get(j));
+//                            vertexQ.add(newCV);
+//                            vertexL.remove(vertexL.get(j));
+//                            vertexL.add(newCV);
+//                        }
+//                    }
+//                    adjV.prev = curV.vertex;
+//                    adjV.visited = true;
+//                }
+//                // if the vertex has already been visited
+//                else {
+//                for (int j = 0; j < vertexL.size(); j++) {
+//                    // if the old distance is longger than the new distance, replace the
+//                    // old costVertex with the new costVertex
+//                    if (vertexL.get(j).vertex == adjV && vertexL.get(j).cost > newDis) {
+//                        vertexQ.remove(vertexL.get(j));
+//                        vertexQ.add(newCV);
+//                        vertexL.remove(vertexL.get(j));
+//                        vertexL.add(newCV);
+//                    }
+//                }
+
+//                }
+            }
+        }
+
     }
 
     /**
@@ -335,7 +399,7 @@ public class Graph {
      */
     private double hValue(String cur, String goal) {
 
-        // TODO
+        // calculate the h value in A*
 
         return 0.0;
     }
@@ -362,20 +426,18 @@ public class Graph {
     public List<Edge> getPath(String s, String t) throws OutOfMemoryError{
 
         // TODO
-        List<Edge> reversedResult = new ArrayList<Edge>(myEdgeList.size());
-        List<Edge> result = new ArrayList<Edge>(myEdgeList.size());
-        Vertex start = myVertex.get(s);
+        Stack<Edge> reversedResult = new Stack<>();
+        List<Edge> result = new ArrayList<Edge>();
         Vertex target = myVertex.get(t);
         while (target.getPrev() != null) {
-            String x = target.getPrev().getName();
             Edge edge = new Edge(target.getPrev(), target,
                     computeEuclideanDistance(target.getPrev().getX(),
                             target.getPrev().getY(), target.getX(), target.getY()));
-            reversedResult.add(edge);
+            reversedResult.push(edge);
             target = target.prev;
         }
-        for (int i = 0; i < reversedResult.size(); i++) {
-            result.add(reversedResult.get(i));
+        while (!reversedResult.empty()){
+            result.add(reversedResult.pop());
         }
         return result;
 
