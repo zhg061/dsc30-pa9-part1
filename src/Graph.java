@@ -295,28 +295,23 @@ public class Graph {
      */
     public void Dijkstra(String s, String t) {
         resetAllVertices();
-        if (s == t) {
+        if (s == t)
             return;
-        }
         PriorityQueue<CostVertex> unvisited = new PriorityQueue<>();
         //for each vertex currentV in graph, currentV->distance = Infinity, currentV->predV = 0
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
         for (Vertex curV: myEdgeList.keySet()) {
-            if (curV == start) {
+            if (curV == start)
                 unvisited.add(new CostVertex(0, curV));
-            }
-            else {
+            else
                 unvisited.add(new CostVertex(inf, curV));
-            }
         }
-
         while (!unvisited.isEmpty()) {
             CostVertex currentV = unvisited.poll();
             currentV.vertex.visited = true;
-            if (currentV.vertex == target) {
+            if (currentV.vertex == target)
                 return;
-            }
             for (Edge value: myEdgeList.get(currentV.vertex)) {
                 Vertex adjV = value.getTarget();
                 if (!adjV.visited) {
@@ -327,16 +322,6 @@ public class Graph {
                     adjV.prev = currentV.vertex;
                     adjV.visited = true;
                 }
-//                else {
-//                    double edgeWeight = value.getDistance();
-//                    double alternativePathDistance = edgeWeight + currentV.cost;
-//                    if (alternativePathDistance < unvisited.get(adjV).cost) {
-//                        CostVertex newCV = new CostVertex(alternativePathDistance, adjV);
-//                        unvisited.put(adjV, newCV);
-//                        adjV.prev = currentV.vertex;
-////                        adjV.visited = true;
-//                    }
-//                }
             }
         }
     }
@@ -348,24 +333,24 @@ public class Graph {
      * @param goal the goal vertex to reach
      * @return the h value of cur and goal vertices
      */
-    private double hValue(String cur, String goal) {
-
-        // TODO
-
-        return 0.0;
-    }
-
-    /**
-     * Find the path from vertex with name s to vertex with name t, using A*
-     *
-     * @param s the name of starting vertex
-     * @param t the name of targeting vertex
-     */
-    public void AStar(String s, String t) {
-
-        // TODO
-
-    }
+//    private double hValue(String cur, String goal) {
+//
+//        // TODO
+//
+//        return 0.0;
+//    }
+//
+//    /**
+//     * Find the path from vertex with name s to vertex with name t, using A*
+//     *
+//     * @param s the name of starting vertex
+//     * @param t the name of targeting vertex
+//     */
+//    public void AStar(String s, String t) {
+//
+//        // TODO
+//
+//    }
 
     /**
      * Returns a list of edges for a path from city s to city t.
