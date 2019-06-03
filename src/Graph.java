@@ -214,21 +214,22 @@ public class Graph {
         // Push the current source node
         stack.add(start);
         while (!stack.isEmpty()) {
-            Vertex currentV = stack.poll();
-            currentV.visited = true;
+            Vertex currentV = stack.pop();
+
             if (currentV == target) {
                 return;
             }
-
             //for each vertex adjV adjacent to currentV
             //Push adjV to stack
+            if(currentV.visited)
+                continue;
+            currentV.visited = true;
             for (Edge value: myEdgeList.get(currentV)) {
                 Vertex curVertex = value.getTarget();
-                if (!curVertex.visited) {
-                    curVertex.visited = true;
-                    curVertex.prev = currentV;
-                    stack.addLast(curVertex);
-                }
+                if(curVertex.visited)
+                    continue;
+                curVertex.prev = currentV;
+                stack.push(curVertex);
             }
         }
 
@@ -304,6 +305,11 @@ public class Graph {
             return Double.compare(cost, o.cost);
         }
 
+        public String toString()
+        {
+            return vertex + ", " + cost;
+        }
+
 
     }
 
@@ -319,7 +325,7 @@ public class Graph {
             return;
         // create a priorityQueue that contains CostVertex
         PriorityQueue<CostVertex> vertexQ = new PriorityQueue<>();
-        ArrayList<CostVertex> vertexL = new ArrayList<>();
+//        ArrayList<CostVertex> vertexL = new ArrayList<>();
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
         //for each vertex currentV in graph,
@@ -332,15 +338,18 @@ public class Graph {
             }
             else {
                 curV.dist = inf;
-//                vertexL.add(new CostVertex(inf, curV));
             }
         }
         while (!vertexQ.isEmpty()) {
+            System.out.println(vertexQ);
             CostVertex curV = vertexQ.poll();
+            if(curV.vertex.visited)
+                continue;
             if (curV.vertex == target)
                 return;
             // get all the adjacent edges of the current vertex
             Vertex startV = curV.vertex;
+            startV.visited = true;
             for(Edge edge : myEdgeList.get(startV)) {
                 // get the target and distance of the edge
                 Vertex adjV = edge.getTarget();
@@ -348,7 +357,7 @@ public class Graph {
                 double newDis = edgeWeight + curV.cost;
                 // create a new cost vertex with the new distance
 
-                if (adjV.dist > newDis && adjV.visited == false) {
+                if (adjV.dist > newDis) {
                     CostVertex newCV = new CostVertex(newDis, adjV);
                     adjV.dist = newDis;
                     vertexQ.add(newCV);

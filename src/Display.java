@@ -122,7 +122,7 @@ public class Display extends JFrame {
         gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         contentPane.setLayout(gbl_contentPane);
 
-        graph = readGraph("cityxy.txt", "citypairs.txt");
+        graph = readGraph("ucsdxy.txt", "ucsdpairs.txt");
 
         panel = new GraphPanel(graph);
         GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -160,7 +160,7 @@ public class Display extends JFrame {
         contentPane.add(lblReloadGraph, gbc_lblReloadGraph);
 
         txtCityxytxt = new JTextField();
-        txtCityxytxt.setText("cityxy.txt");
+        txtCityxytxt.setText("ucsdxy.txt");
         GridBagConstraints gbc_txtCityxytxt = new GridBagConstraints();
         gbc_txtCityxytxt.gridwidth = 1;
         gbc_txtCityxytxt.insets = new Insets(0, 0, 5, 5);
@@ -171,7 +171,7 @@ public class Display extends JFrame {
         txtCityxytxt.setColumns(10);
 
         txtCitypairstxt = new JTextField();
-        txtCitypairstxt.setText("citypairs.txt");
+        txtCitypairstxt.setText("ucsdpairs.txt");
         GridBagConstraints gbc_txtCitypairstxt = new GridBagConstraints();
         gbc_txtCitypairstxt.gridwidth = 1;
         gbc_txtCitypairstxt.insets = new Insets(0, 0, 5, 5);
@@ -385,6 +385,7 @@ public class Display extends JFrame {
         panel.overlayEdges.put("unweighted", new LinkedList<Edge>());
         panel.overlayEdges.put("mst", new LinkedList<Edge>());
 
+        repaint();
         repaint();
     }
 
