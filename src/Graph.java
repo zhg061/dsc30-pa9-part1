@@ -189,6 +189,7 @@ public class Graph {
         // changes all the prev of all the vertexes to null
         for (Vertex curV: myEdgeList.keySet()) {
             curV.setPrev(null);
+            curV.visited = false;
         }
 
     }
@@ -200,14 +201,12 @@ public class Graph {
      * @param t the name of the targeting vertex
      */
     public void DFS(String s, String t) {
+        if (!myVertex.containsKey(s) || !myVertex.containsKey(t) || s.equals(t))
+            return;
         resetAllVertices();
         // get the vertexes of both start and target
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
-        if (s == t) {
-            return;
-        }
-
         // Create a stack for DFS
         LinkedList<Vertex> stack = new LinkedList<>();
 
@@ -244,7 +243,8 @@ public class Graph {
      * @param t the name of the targeting vertex
      */
     public void BFS(String s, String t) {
-
+        if (!myVertex.containsKey(s) || !myVertex.containsKey(t) || s.equals(t))
+            return;
         // reset all the prev to null
         resetAllVertices();
         if (s == t) {
@@ -320,12 +320,11 @@ public class Graph {
      * @param t the name of targeting vertex
      */
     public void Dijkstra(String s, String t) {
-        resetAllVertices();
-        if (s == t)
+        if (!myVertex.containsKey(s) || !myVertex.containsKey(t) || s.equals(t))
             return;
+        resetAllVertices();
         // create a priorityQueue that contains CostVertex
         PriorityQueue<CostVertex> vertexQ = new PriorityQueue<>();
-//        ArrayList<CostVertex> vertexL = new ArrayList<>();
         Vertex start = myVertex.get(s);
         Vertex target = myVertex.get(t);
         //for each vertex currentV in graph,
@@ -334,7 +333,6 @@ public class Graph {
             if (curV == start) {
                 curV.dist = 0.0;
                 vertexQ.add(new CostVertex(0, curV));
-//                vertexL.add(new CostVertex(0, curV));
             }
             else {
                 curV.dist = inf;
@@ -364,36 +362,6 @@ public class Graph {
                     adjV.prev = curV.vertex;
 
                 }
-
-
-                // if the target vertex has not been visited
-//                if (!adjV.visited) {
-//                    for (int j = 0; j < vertexL.size(); j++) {
-//                        if (vertexL.get(j).vertex == adjV) {
-//                            //replace the original costVertex with the new costVertex
-//                            vertexQ.remove(vertexL.get(j));
-//                            vertexQ.add(newCV);
-//                            vertexL.remove(vertexL.get(j));
-//                            vertexL.add(newCV);
-//                        }
-//                    }
-//                    adjV.prev = curV.vertex;
-//                    adjV.visited = true;
-//                }
-//                // if the vertex has already been visited
-//                else {
-//                for (int j = 0; j < vertexL.size(); j++) {
-//                    // if the old distance is longger than the new distance, replace the
-//                    // old costVertex with the new costVertex
-//                    if (vertexL.get(j).vertex == adjV && vertexL.get(j).cost > newDis) {
-//                        vertexQ.remove(vertexL.get(j));
-//                        vertexQ.add(newCV);
-//                        vertexL.remove(vertexL.get(j));
-//                        vertexL.add(newCV);
-//                    }
-//                }
-
-//                }
             }
         }
 
@@ -409,8 +377,11 @@ public class Graph {
     private double hValue(String cur, String goal) {
 
         // calculate the h value in A*
-
-        return 0.0;
+        Vertex s = myVertex.get(cur);
+        Vertex t = myVertex.get(goal);
+        double directDistance = computeEuclideanDistance(s.getX(),
+                s.getY(), t.getX(), t.getY());
+        return directDistance;
     }
 
     /**
@@ -421,8 +392,52 @@ public class Graph {
      */
     public void AStar(String s, String t) {
 
-        // TODO
-
+        // if s and t do not exist return
+        if (!myVertex.containsKey(s) || !myVertex.containsKey(t) || s.equals(t))
+            return;
+        resetAllVertices();
+        // create a priorityQueue that contains CostVertex
+        PriorityQueue<CostVertex> vertexQ = new PriorityQueue<>();
+        Vertex start = myVertex.get(s);
+        Vertex target = myVertex.get(t);
+        //for each vertex currentV in graph,
+        // currentV->distance = Infinity, currentV->predV = 0
+        for (Vertex curV : myEdgeList.keySet()) {
+            if (curV == start) {
+                curV.dist = 0.0;
+                vertexQ.add(new CostVertex(0, curV));
+            }
+            else {
+                curV.dist = inf;
+            }
+        }
+        while (!vertexQ.isEmpty()) {
+            CostVertex curV = vertexQ.poll();
+            Vertex startV = curV.vertex;
+            if(startV.visited || !myEdgeList.containsKey(startV))
+                continue;
+            if (startV.equals(target))
+                return;
+            // get all the adjacent edges of the current vertex
+            startV.visited = true;
+            for (Edge edge : myEdgeList.get(startV)) {
+                // get the target and distance of the edge
+                Vertex adjV = edge.getTarget();
+                double edgeWeight = edge.getDistance();
+                double newDis = startV.dist + edgeWeight;
+                //                double newDis = edgeWeight + curV.vertex.dist
+                //                        - hValue(curV.vertex.getName(), target.getName());
+                // create a new cost vertex with the new distance
+                if (!adjV.visited && adjV.dist > newDis) {
+                    //                    CostVertex newCV = new CostVertex(newDis, adjV);
+                    adjV.prev = startV;
+                    adjV.dist = newDis;
+                    newDis = newDis + hValue(adjV.getName(), t);
+                    CostVertex newCV = new CostVertex(newDis, adjV);
+                    vertexQ.offer(newCV);
+                }
+            }
+        }
     }
 
     /**
@@ -434,7 +449,7 @@ public class Graph {
      */
     public List<Edge> getPath(String s, String t) throws OutOfMemoryError{
 
-        // TODO
+        // get the path from s to t
         Stack<Edge> reversedResult = new Stack<>();
         List<Edge> result = new ArrayList<Edge>();
         Vertex target = myVertex.get(t);
