@@ -460,6 +460,7 @@ public class Graph {
             reversedResult.push(edge);
             target = target.prev;
         }
+        // reverse the result to get the correct order
         while (!reversedResult.empty()){
             result.add(reversedResult.pop());
         }
