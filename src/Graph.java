@@ -11,13 +11,14 @@ import java.util.*;
 public class Graph {
 
     // TODO: define a data structure to store all the vertices with fast access
-    static int powerFactor = 2;
-    static double powerFactor1 = 1.0/2.0;
+
     static Double inf = Double.POSITIVE_INFINITY;
     private HashMap<Vertex, List<Edge>> myEdgeList;
     private HashMap<String, Vertex> myVertex;
     private ArrayList<Vertex> exploredVertex;
     private CostVertex currentV;
+    private static final int POWERFFACTOR = 2;
+    private static final double POWERFFACTOR1 = 0.5;
 
     /**
      * Constructor for Graph that set myEdgeList and myVertex
@@ -157,9 +158,8 @@ public class Graph {
     public double computeEuclideanDistance(double ux, double uy, double vx, double vy) {
 
         // calculate the distance from u to v
-
-        return Math.pow((Math.pow((vx - ux), powerFactor) +
-                Math.pow((vy - uy), powerFactor)), powerFactor1);
+        return Math.pow((Math.pow((vx - ux), POWERFFACTOR) +
+                Math.pow((vy - uy), POWERFFACTOR)), POWERFFACTOR1);
     }
 
     /**
